@@ -63,7 +63,7 @@ public class ClientController {
     public Mono<ResponseEntity<ClientModel>> create(@Valid @RequestBody ClientModel request){
         log.info("create executed {}", request);
         return clientService.create(clientMapper.modelToEntity(request))
-                .map(client -> clientMapper.entityToModel(client))
+                .map(client -> clientMapper.entityToModel((Client) client))
                 .flatMap(c -> Mono.just(ResponseEntity.created(URI.create(String.format("http://%s:%s/%s/%s", name, port, "Client", c.getName())))
                         .body(c)));
                 //.defaultIfEmpty(ResponseEntity.notFound().build());

@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.logging.Level;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -49,19 +47,24 @@ public class ClientService {
     }
 
 
-    public Mono<Client> create(Client client){
+    public Mono<Object> create(Client client){
         log.debug("create executed {}", client);
-        return clientTypeRepository.findById(client.getClientType().getId())
-                .flatMap(x -> {
-                    return identityTypeRepository.findById(client.getIdentityType().getId())
-                            .flatMap(y -> {
-                                log.debug("create executed {}", client);
-                                return clientRepository.save(client);
-                            })
-                            .switchIfEmpty(Mono.error(new FunctionalException(ErrorMessage.IDENTITYTYPE_NOT_FOUNT.getValue())));
-                })
-                .switchIfEmpty(Mono.error(new FunctionalException(ErrorMessage.CLIENTTYPE_NOT_FOUND.getValue())));
-        //return clientRepository.save(client);
+        return clientRepository.findByIdentityNumber(client.getIdentityNumber())
+                .flatMap(x-> Mono.error(new FunctionalException(ErrorMessage.CLIENT_DUPLICATE.getValue())))
+                .switchIfEmpty(
+                        clientTypeRepository.findById(client.getClientType().getId())
+                                .flatMap(x -> {
+                                    client.setClientType(x);
+                                    return identityTypeRepository.findById(client.getIdentityType().getId())
+                                            .flatMap(y -> {
+                                                client.setIdentityType(y);
+                                                log.debug("create executed {}", client);
+                                                return clientRepository.save(client);
+                                            })
+                                            .switchIfEmpty(Mono.error(new FunctionalException(ErrorMessage.IDENTITYTYPE_NOT_FOUNT.getValue())));
+                                })
+                                .switchIfEmpty(Mono.error(new FunctionalException(ErrorMessage.CLIENTTYPE_NOT_FOUND.getValue())))
+                );
     }
 
 
@@ -84,6 +87,7 @@ public class ClientService {
 
     public Mono<Client> findByIdentityNumber(String identityNumber){
         log.debug("findByIdentityNumber executed {}", identityNumber);
-        return clientRepository.findByIdentityNumber(identityNumber);
+        return clientRepository.findByIdentityNumber(identityNumber)
+                .switchIfEmpty(Mono.error(new FunctionalException(ErrorMessage.CLIENT_NOT_FOUND.getValue())));
     }
 }
