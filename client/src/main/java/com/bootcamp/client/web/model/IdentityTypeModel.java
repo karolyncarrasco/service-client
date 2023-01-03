@@ -1,6 +1,5 @@
 package com.bootcamp.client.web.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +16,7 @@ public class IdentityTypeModel {
     @Id
     private String id;
 
-    @NotBlank(message="description cannot be null or empty")
+    @NotBlank(message = "description cannot be null or empty")
     private String description;
 
 }

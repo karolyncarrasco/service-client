@@ -16,6 +16,6 @@ public class ClientTypeModel {
     @Id
     private String id;
 
-    @NotBlank(message="description cannot be null or empty")
+    @NotBlank(message = "description cannot be null or empty")
     private String description;
 }

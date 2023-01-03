@@ -8,9 +8,9 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface IdentityTypeMapper {
-    IdentityType modelToEntity (IdentityTypeModel model);
+    IdentityType modelToEntity(IdentityTypeModel model);
 
-    IdentityTypeModel entityToModel (IdentityType event);
+    IdentityTypeModel entityToModel(IdentityType event);
 
     @Mapping(target = "id", ignore = true)
     void update(@MappingTarget IdentityType entity, IdentityType updateEntity);

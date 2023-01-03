@@ -8,13 +8,13 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
-    @Mapping(target="identityType.description", source="identityType.description")
-    @Mapping(target="clientType.description", source="clientType.description")
-    Client modelToEntity (ClientModel model);
+    @Mapping(target = "identityType.description", source = "identityType.description")
+    @Mapping(target = "clientType.description", source = "clientType.description")
+    Client modelToEntity(ClientModel model);
 
-    @Mapping(target="identityType.description", source="identityType.description")
-    @Mapping(target="clientType.description", source="clientType.description")
-    ClientModel entityToModel (Client event);
+    @Mapping(target = "identityType.description", source = "identityType.description")
+    @Mapping(target = "clientType.description", source = "clientType.description")
+    ClientModel entityToModel(Client event);
 
     @Mapping(target = "id", ignore = true)
     void update(@MappingTarget Client entity, Client updateEntity);

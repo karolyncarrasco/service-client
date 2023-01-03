@@ -1,6 +1,5 @@
 package com.bootcamp.client.service;
 
-import com.bootcamp.client.domain.Client;
 import com.bootcamp.client.domain.IdentityType;
 import com.bootcamp.client.repository.IdentityTypeRepository;
 import com.bootcamp.client.web.mapper.IdentityTypeMapper;
@@ -21,24 +20,24 @@ import java.time.LocalDate;
 public class IdentityTypeService {
 
     @Autowired
-    IdentityTypeRepository identityTypeRepository;
+    private IdentityTypeRepository identityTypeRepository;
 
     @Autowired
     private IdentityTypeMapper identityTypeMapper;
 
-    public Flux<IdentityType> findAll(){
+    public Flux<IdentityType> findAll() {
         log.debug("findAll executed");
         return identityTypeRepository.findAll();
     }
 
 
-    public Mono<IdentityType> findById(String id){
+    public Mono<IdentityType> findById(String id) {
         log.debug("findById executed {}", id);
         return identityTypeRepository.findById(id);
     }
 
 
-    public Mono<IdentityType> create(IdentityType identityType){
+    public Mono<IdentityType> create(IdentityType identityType) {
         log.debug("create executed {}", identityType);
         identityType.setCreationDate(LocalDate.now());
         identityType.setCreationUser(System.getProperty("user.name"));
@@ -47,7 +46,7 @@ public class IdentityTypeService {
     }
 
 
-    public Mono<IdentityType> update(String id,  IdentityType identityType){
+    public Mono<IdentityType> update(String id,  IdentityType identityType) {
         log.debug("update executed {}:{}", id, identityType);
         identityType.setModifiedDate(LocalDate.now());
         identityType.setModifiedUser(System.getProperty("user.name"));
@@ -59,7 +58,7 @@ public class IdentityTypeService {
     }
 
 
-    public Mono<IdentityType> delete(String id){
+    public Mono<IdentityType> delete(String id) {
         log.debug("delete executed {}", id);
         return identityTypeRepository.findById(id)
                 .flatMap(existingType -> identityTypeRepository.delete(existingType)

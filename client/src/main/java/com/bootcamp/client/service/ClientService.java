@@ -35,22 +35,22 @@ public class ClientService {
     private ClientMapper clientMapper;
 
 
-    public Flux<Client> findAll(){
+    public Flux<Client> findAll() {
         log.debug("findAll executed");
         return clientRepository.findAll();
     }
 
 
-    public Mono<Client> findById(String ClientId){
-        log.debug("findById executed {}", ClientId);
-        return clientRepository.findById(ClientId);
+    public Mono<Client> findById(String clientId) {
+        log.debug("findById executed {}", clientId);
+        return clientRepository.findById(clientId);
     }
 
 
-    public Mono<Object> create(Client client){
+    public Mono<Object> create(Client client) {
         log.debug("create executed {}", client);
         return clientRepository.findByIdentityNumber(client.getIdentityNumber())
-                .flatMap(x-> Mono.error(new FunctionalException(ErrorMessage.CLIENT_DUPLICATE.getValue())))
+                .flatMap(x -> Mono.error(new FunctionalException(ErrorMessage.CLIENT_DUPLICATE.getValue())))
                 .switchIfEmpty(
                         clientTypeRepository.findById(client.getClientType().getId())
                                 .flatMap(x -> {
@@ -68,7 +68,7 @@ public class ClientService {
     }
 
 
-    public Mono<Client> update(String clientId,  Client client){
+    public Mono<Client> update(String clientId,  Client client) {
         log.debug("update executed {}:{}", clientId, client);
             return clientRepository.findById(clientId)
                     .flatMap(dbClient -> {
@@ -78,14 +78,14 @@ public class ClientService {
     }
 
 
-    public Mono<Client> delete(String ClientId){
-        log.debug("delete executed {}", ClientId);
-        return clientRepository.findById(ClientId)
+    public Mono<Client> delete(String clientId) {
+        log.debug("delete executed {}", clientId);
+        return clientRepository.findById(clientId)
                 .flatMap(existingClient -> clientRepository.delete(existingClient)
                         .then(Mono.just(existingClient)));
     }
 
-    public Mono<Client> findByIdentityNumber(String identityNumber){
+    public Mono<Client> findByIdentityNumber(String identityNumber) {
         log.debug("findByIdentityNumber executed {}", identityNumber);
         return clientRepository.findByIdentityNumber(identityNumber)
                 .switchIfEmpty(Mono.error(new FunctionalException(ErrorMessage.CLIENT_NOT_FOUND.getValue())));

@@ -19,24 +19,22 @@ import java.time.LocalDate;
 @Transactional
 public class ClientTypeService {
     @Autowired
-    ClientTypeRepository clientTypeRepository;
+    private ClientTypeRepository clientTypeRepository;
 
     @Autowired
     private ClientTypeMapper clientTypeMapper;
-    
-    public Flux<ClientType> findAll(){
+    public Flux<ClientType> findAll() {
         log.debug("findAll executed");
         return clientTypeRepository.findAll();
     }
 
-
-    public Mono<ClientType> findById(String id){
+    public Mono<ClientType> findById(String id) {
         log.debug("findById executed {}", id);
         return clientTypeRepository.findById(id);
     }
 
 
-    public Mono<ClientType> create(ClientType clientType){
+    public Mono<ClientType> create(ClientType clientType) {
         log.debug("create executed {}", clientType);
         clientType.setCreationDate(LocalDate.now());
         clientType.setCreationUser(System.getProperty("user.name"));
@@ -45,7 +43,7 @@ public class ClientTypeService {
     }
 
 
-    public Mono<ClientType> update(String id,  ClientType clientType){
+    public Mono<ClientType> update(String id,  ClientType clientType) {
         log.debug("update executed {}:{}", id, clientType);
         clientType.setModifiedDate(LocalDate.now());
         clientType.setModifiedUser(System.getProperty("user.name"));
@@ -57,7 +55,7 @@ public class ClientTypeService {
     }
 
 
-    public Mono<ClientType> delete(String id){
+    public Mono<ClientType> delete(String id) {
         log.debug("delete executed {}", id);
         return clientTypeRepository.findById(id)
                 .flatMap(existingType -> clientTypeRepository.delete(existingType)
