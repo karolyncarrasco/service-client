@@ -14,11 +14,12 @@
 	<name>client</name>
 	<description>Client microservice</description>
 	<properties>
+		<sonar.projectKey>karolyncarrasco</sonar.projectKey>
+		<sonar.organization>karolyncarrasco</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<java.version>11</java.version>
 		<org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
 		<lombok.version>1.18.24</lombok.version>
-		<sonar.organization>karolyncarrasco</sonar.organization>
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
